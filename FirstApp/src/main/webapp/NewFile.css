@@ -1,0 +1,35 @@
+@charset "ISO-8859-1";
+body{
+	    background: black;
+    padding: 10px;
+}
+div{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.box{
+	    background: aqua;
+    border: blue;
+    border-radius: 20px;
+    height: 30px;
+    width: 200px;
+        margin: 10px
+}
+.button{
+	background: aqua;
+    border: aqua;
+    border-radius: 20px;
+    width: 120px;
+    height: 40px;
+        margin: 10px
+}
+form{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+span{
+	color: white;
+}
