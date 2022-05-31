@@ -3,11 +3,18 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
  version="2.4">
+ 
+ <resource-ref>
+		<res-ref-name>jdbc/postgres</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
  <servlet>
  <servlet-name>DoMath</servlet-name>
  <servlet-class>example.controller.Calculater</servlet-class>
  </servlet>
-
+ 
  <servlet-mapping>
  <servlet-name>DoMath</servlet-name>
  <url-pattern>/calculate</url-pattern>
