@@ -7,10 +7,10 @@ import javax.naming.*;
 import javax.sql.DataSource;
 
 public class MyConnection {
-	private static MyConnection single_instance = null;
+	private static MyConnection single_instance = new MyConnection();
 	private Context ctx;
-	private Connection conn;
-	private DataSource ds;
+	private static Connection conn ;
+	private static DataSource ds;
 	 
     // Declaring a variable of type String
     public String s;
@@ -30,16 +30,19 @@ public class MyConnection {
 		 
     }
 
-    public static MyConnection getInstance()
+    /*private MyConnection getInstance()
     {
-        if (single_instance == null)
-            single_instance = new MyConnection();
+        
  
         return single_instance;
-    }
-    public Connection getConnection() {
+    }*/
+    public static Connection getConnection() {
     	try {
+    		if (single_instance == null)
+                single_instance = new MyConnection();
+    		
 			conn = ds.getConnection();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

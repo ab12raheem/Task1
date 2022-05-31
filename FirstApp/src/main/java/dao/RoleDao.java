@@ -11,9 +11,9 @@ import example.model.EmployeeModel;
 import example.model.RoleModel;
 
 public class RoleDao {
-	private MyConnection myConnection = MyConnection.getInstance();
+	
 	public Set<RoleModel>getRoles() throws SQLException{
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		 String z="select * from role;";
@@ -42,7 +42,7 @@ public class RoleDao {
 		return roles;
 	}
 	public void addRole(RoleModel role) {
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		try {
 			String z="select * from role where name='"+role.getName()+"';";
@@ -66,7 +66,7 @@ public class RoleDao {
 		
 	}
 	public RoleModel getByName(String name) throws SQLException {
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		
 			String z="select * from role where name='"+name+"';";
@@ -91,7 +91,7 @@ public class RoleDao {
 	
 	}
 	public RoleModel getById(Integer id) throws SQLException {
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		
 			String z="select * from role where id='"+id+"';";

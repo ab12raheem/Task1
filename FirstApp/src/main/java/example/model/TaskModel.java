@@ -43,7 +43,7 @@ public class TaskModel {
 	}
 	@Override
 	public String toString() {
-		return "TaskModel [id=" + id + ", description=" + description + ", status=" + status + ", attachment="
+		return "[id=" + id + "\n, description=" + description + ", status=" + status + ", attachment="
 				+ attachment + "]";
 	}
 	

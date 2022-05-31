@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,32 +12,84 @@ import example.model.EmployeeModel;
 import example.model.RoleModel;
 
 public class EmployeeDao {
-	private MyConnection myConnection = MyConnection.getInstance();
+	private final String ID="id",FIRST_NAME="first_name",lAST_NAME="last_name",ROLE_ID="role_id",
+			EMAIL="email",PASSWORD="password",USER_NAME="user_name";
+	private PreparedStatement statement;
+
 	private RoleDao roleDao=new RoleDao();
-	public void addEmployee(EmployeeModel employee) {
-		Connection conn=myConnection.getConnection();
-		Statement statement;
-		try {
-			String z="select * from employee where email='"+employee.getEmail()+"';";
-			String s="select * from employee where  user_name='"+employee.getUserName()+"' ;";
-			statement = conn.createStatement();
-			ResultSet rs= statement.executeQuery(z);
-			if(rs.next()) {
-				 throw new IllegalStateException("email used before");
-				
-			}
-			rs=statement.executeQuery(s);
-			if(rs.next()) {
-				 throw new IllegalStateException("userName used before");
-				
-			}
+	public EmployeeModel mapRecordToEmployee(Integer id,String firstName,String lastName,Integer roleId,String email,String  password,
+			String userName) throws SQLException {
+		EmployeeModel employee=new EmployeeModel();
+		 employee.setId(id);
+		 employee.setFirstName(firstName);
+		 employee.setLastName(lastName);
+		 employee.setEmail(email);
+		 employee.setPassword(password);
+		 RoleModel role = roleDao.getById(roleId);
+		 employee.setRole(role);
+		 employee.setUserName(userName);
+		 return employee;
+		
+		
+	}
+	public Boolean emailUsedBefore(String email) throws SQLException {
+		Connection conn=MyConnection.getConnection();
+		String z="select * from employee where email=?";
+		statement = conn.prepareStatement(z);
+		statement.setString(1, email);
+		ResultSet rs= statement.executeQuery();
+		if(rs.next()) {
+			 return true;
 			
-			statement.executeUpdate("INSERT INTO employee"
+		}
+		return false;
+		
+		
+	}
+	public Boolean userNameUsedBefore(String userName) throws SQLException {
+		Connection conn=MyConnection.getConnection();
+		String z="select * from employee where user_name=?";
+		statement = conn.prepareStatement(z);
+		statement.setString(1, userName);
+		ResultSet rs= statement.executeQuery();
+		if(rs.next()) {
+			 return true;
+			
+		}
+		return false;
+		
+		
+	}
+	
+	public void addEmployee(EmployeeModel employee) {
+		Connection conn=MyConnection.getConnection();
+		
+		try {
+			Boolean used=userNameUsedBefore(employee.getUserName());
+			if(used) {
+				throw new IllegalStateException("user name used before");
+			}
+			used =emailUsedBefore(employee.getEmail());
+			if(used) {
+				throw new IllegalStateException("email used before");
+			}
+			statement = conn.prepareStatement("INSERT INTO employee"
+					+ " (id,first_name, last_name, role_id,email, password, user_name) " 
+					+ "VALUES (DEFAULT,?,?,?,?,?,?)");
+			statement.setString(1,employee.getFirstName());
+			statement.setString(2,employee.getLastName());
+			statement.setInt(3,employee.getRole().getId());
+			statement.setString(4,employee.getEmail());
+			statement.setString(5,employee.getPassword());
+			statement.setString(6,employee.getUserName());
+			statement.executeUpdate();
+			
+			/*statement.executeUpdate("INSERT INTO employee"
 					+ " (id,first_name, last_name, role_id,email, password, user_name) " 
 					+ "VALUES (DEFAULT, '"+employee.getFirstName()+"',"
 							+ " '"+employee.getLastName()+"', "+employee.getRole().getId()+",'"+employee.getEmail()+"',"
-									+ "'"+employee.getPassword()+"','"+employee.getUserName()+"')");
-			conn.close();
+									+ "'"+employee.getPassword()+"','"+employee.getUserName()+"')");*/
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,12 +99,13 @@ public class EmployeeDao {
 		
 	}
 	public Set<EmployeeModel> getTeam(Integer id) throws SQLException{
-		Connection conn=myConnection.getConnection();
-		Statement statement;
-		statement = conn.createStatement();
-		 String z="select * from employee where id in(select employee2_id from employee_enrolled where employee_id="+id+") ;";
+		Connection conn=MyConnection.getConnection();
+		
+		 String z="select * from employee where id in(select employee2_id from employee_enrolled where employee_id=?)";
 		 
-		 ResultSet rs=statement.executeQuery(z);
+		 statement = conn.prepareStatement(z);
+		 statement.setInt(1,id);
+		 ResultSet rs=statement.executeQuery();
 		 
 		 Set<EmployeeModel> employees=new HashSet();
 		
@@ -59,15 +113,9 @@ public class EmployeeDao {
 		 
 		 
 		 while(rs.next()) {
-			 EmployeeModel employee=new EmployeeModel();
-			 employee.setId(rs.getInt("id"));
-			 employee.setFirstName(rs.getString("first_name"));
-			 employee.setLastName(rs.getString("last_name"));
-			 employee.setEmail(rs.getString("email"));
-			 employee.setPassword(rs.getString("password"));
-			 RoleModel role = roleDao.getById(rs.getInt("role_id"));
-			 employee.setRole(role);
-			 employee.setUserName(rs.getString("user_name"));
+			 EmployeeModel employee=mapRecordToEmployee(rs.getInt(ID),rs.getString(FIRST_NAME),rs.getString(lAST_NAME)
+					 ,rs.getInt(ROLE_ID),rs.getString(EMAIL),rs.getString(PASSWORD),
+					 rs.getString(USER_NAME));
 			 
 			 employees.add(employee);
 			 
@@ -77,65 +125,54 @@ public class EmployeeDao {
 			 throw new IllegalStateException("employees not found");
 		 }
 		
-		conn.close();
+	
 		return employees;
 	}
 	public Set<EmployeeModel> getEmployees() throws SQLException{
 		
-		Connection conn=myConnection.getConnection();
-		Statement statement;
-		statement = conn.createStatement();
-		 String z="select * from employee;";
-		 ResultSet rs=statement.executeQuery(z);
+		Connection conn=MyConnection.getConnection();
+		String z="select * from employee";
+	
+		statement = conn.prepareStatement(z);
+		 
+		 ResultSet rs=statement.executeQuery();
 		 Set<EmployeeModel> employees=new HashSet();
 		
 		 
 		 
 		 while(rs.next()) {
-			 EmployeeModel employee=new EmployeeModel();
-			 
-			 employee.setId(rs.getInt("id"));
-			 employee.setFirstName(rs.getString("first_name"));
-			 employee.setLastName(rs.getString("last_name"));
-			 employee.setEmail(rs.getString("email"));
-			 employee.setPassword(rs.getString("password"));
-			 RoleModel role = roleDao.getById(rs.getInt("role_id"));
-			 employee.setRole(role);
-			 employee.setUserName(rs.getString("user_name"));
+			 EmployeeModel employee=mapRecordToEmployee(rs.getInt(ID),rs.getString(FIRST_NAME),rs.getString(lAST_NAME)
+					 ,rs.getInt(ROLE_ID),rs.getString(EMAIL),rs.getString(PASSWORD),
+					 rs.getString(USER_NAME));
 			 
 			 employees.add(employee);
-			 
 			 
 		 }
 		 if(employees.isEmpty()) {
 			 throw new IllegalStateException("employees not found");
 		 }
 		
-		conn.close();
+
 		return employees;
 	}
 	
 public Set<EmployeeModel> getEmployeesByRole(String roleName) throws SQLException{
 		RoleModel role =roleDao.getByName(roleName);
-		Connection conn=myConnection.getConnection();
-		Statement statement;
-		statement = conn.createStatement();
-		 String z="select * from employee where role_id="+role.getId()+";";
-		 ResultSet rs=statement.executeQuery(z);
+		Connection conn=MyConnection.getConnection();
+		String z="select * from employee where role_id=?";
+	
+		statement = conn.prepareStatement(z);
+		statement.setInt(1, role.getId());
+		 
+		 ResultSet rs=statement.executeQuery();
 		 Set<EmployeeModel> employees=new HashSet();
 		 
 		 
 		 
 		 while(rs.next()) {
-			 EmployeeModel employee=new EmployeeModel();
-			 
-			 employee.setId(rs.getInt("id"));
-			 employee.setFirstName(rs.getString("first_name"));
-			 employee.setLastName(rs.getString("last_name"));
-			 employee.setEmail(rs.getString("email"));
-			 employee.setPassword(rs.getString("password"));
-			 employee.setRole(role);
-			 employee.setUserName(rs.getString("user_name"));
+			 EmployeeModel employee=mapRecordToEmployee(rs.getInt(ID),rs.getString(FIRST_NAME),rs.getString(lAST_NAME)
+					 ,rs.getInt(ROLE_ID),rs.getString(EMAIL),rs.getString(PASSWORD),
+					 rs.getString(USER_NAME));
 			 
 			 employees.add(employee);
 			 
@@ -145,18 +182,18 @@ public Set<EmployeeModel> getEmployeesByRole(String roleName) throws SQLExceptio
 			 throw new IllegalStateException("employees not found");
 		 }
 		
-		conn.close();
 		return employees;
 	}
 	
 	
 	
 	public EmployeeModel getByUserName(String userName) throws SQLException {
-		Connection conn=myConnection.getConnection();
-		Statement statement;
-		statement = conn.createStatement();
-		 String z="select * from employee where user_name='"+userName+"';";
-		 ResultSet rs=statement.executeQuery(z);
+		Connection conn=MyConnection.getConnection();
+		String z="select * from employee where user_name=?";
+		statement = conn.prepareStatement(z);
+		statement.setString(1, userName);
+		 
+		 ResultSet rs=statement.executeQuery();
 		
 		 
 		 EmployeeModel employee=new EmployeeModel();
@@ -164,15 +201,9 @@ public Set<EmployeeModel> getEmployeesByRole(String roleName) throws SQLExceptio
 		if(rs.next()) {
 			 
 			 
-			 employee.setId(rs.getInt("id"));
-			 employee.setFirstName(rs.getString("first_name"));
-			 employee.setLastName(rs.getString("last_name"));
-			 employee.setEmail(rs.getString("email"));
-			 employee.setPassword(rs.getString("password"));
-			 RoleModel role = roleDao.getById(rs.getInt("role_id"));
-			 employee.setRole(role);
-			 employee.setUserName(rs.getString("user_name")); 
-			 conn.close();
+		 employee=mapRecordToEmployee(rs.getInt(ID),rs.getString(FIRST_NAME),rs.getString(lAST_NAME)
+					 ,rs.getInt(ROLE_ID),rs.getString(EMAIL),rs.getString(PASSWORD),
+					 rs.getString(USER_NAME));
 				return employee;
 			 
 		 }
@@ -185,28 +216,34 @@ public Set<EmployeeModel> getEmployeesByRole(String roleName) throws SQLExceptio
 		
 	}
 	public void updateEmloyee(EmployeeModel employee,String userName) {
-		Connection conn=myConnection.getConnection();
-		Statement statement;
+		Connection conn=MyConnection.getConnection();
+		
 		try {
 			
 			
-			String s="select * from employee where  user_name='"+userName+"' ;";
-			statement = conn.createStatement();
-			ResultSet rs= statement.executeQuery(s);
-			if(!rs.next()) {
-				 throw new IllegalStateException("user not found");
-				
+			Boolean used=userNameUsedBefore(userName);
+			if(!used) {
+				throw new IllegalStateException("user not found");
 			}
-			s="UPDATE employee SET first_name ='"+employee.getFirstName()+"', "
-					+ "last_name='"+employee.getLastName()+"',"
-							+ "role_id="+employee.getRole().getId()+","
-									+ "email='"+employee.getEmail()+"',"
-											+ "password='"+employee.getPassword()+"',"
-													+ "user_name='"+employee.getUserName()+"' WHERE user_name='"+userName+"'";
-		
 			
-			statement.executeUpdate(s);
-			conn.close();
+	
+			String s="UPDATE employee SET first_name =?, "
+					+ "last_name=?,"
+							+ "role_id=?,"
+									+ "email=?,"
+											+ "password=?,"
+													+ "user_name=? WHERE user_name=?";
+			statement=conn.prepareStatement(s);
+			statement.setString(1,employee.getFirstName());
+			statement.setString(2,employee.getLastName());
+			statement.setInt(3,employee.getRole().getId());
+			statement.setString(4,employee.getEmail());
+			statement.setString(5,employee.getPassword());
+			statement.setString(6,employee.getUserName());
+			statement.setString(7,userName);
+		
+			statement.executeUpdate();
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

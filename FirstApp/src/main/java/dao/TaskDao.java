@@ -12,11 +12,11 @@ import example.model.RoleModel;
 import example.model.TaskModel;
 
 public class TaskDao {
-	private MyConnection myConnection = MyConnection.getInstance();
+	
 	private final EmployeeDao employeeDao = new EmployeeDao();
 	
 	public Set<TaskModel> getTasks() throws SQLException{
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		 String z="select * from task;";
@@ -51,7 +51,7 @@ public class TaskDao {
 	}
 	public Set<TaskModel> getTaskByEmployee(String userName) throws SQLException{
 		EmployeeModel employee=employeeDao.getByUserName(userName);
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		 String z="select * from task where id in(select task_id from task_enrolled where employee_id="+employee.getId()+");";
@@ -80,7 +80,7 @@ public class TaskDao {
 	
 	
 	public Set<TaskModel> getTaskInProgress() throws SQLException{
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		String status="inProgress";
@@ -113,7 +113,7 @@ public class TaskDao {
 		
 	}
 	public Set<TaskModel>getTaskDone() throws SQLException{
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		String status="done";
@@ -149,7 +149,7 @@ public class TaskDao {
 	}
 	public Set<TaskModel> getTaskInProgressByEmployee(String userName) throws SQLException{
 		EmployeeModel employee=employeeDao.getByUserName(userName);
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		String status="inProgress";
@@ -181,7 +181,7 @@ public class TaskDao {
 	}
 	public Set<TaskModel>getTaskDoneByEmployee(String userName) throws SQLException{
 		EmployeeModel employee=employeeDao.getByUserName(userName);
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		String status="done";
@@ -212,7 +212,7 @@ public class TaskDao {
 		return tasks;
 	}
 	public TaskModel getById(Integer id) throws SQLException {
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		 String z="select * from task where id="+id+";";
@@ -234,7 +234,7 @@ public class TaskDao {
 	}
 	public void addTask (TaskModel task) throws SQLException {
 		
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO task"
@@ -251,7 +251,7 @@ public class TaskDao {
 	public void assignTaskToEmployee(Integer id , String userName)throws SQLException  {
 		EmployeeModel employee=employeeDao.getByUserName(userName);
 		TaskModel task=getById(id);
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		statement.executeUpdate("INSERT INTO task_enrolled"
@@ -263,7 +263,7 @@ public class TaskDao {
 	}
 	public void updateTask(TaskModel task,Integer id) throws SQLException {
 		TaskModel task1=getById(id);
-		Connection conn=myConnection.getConnection();
+		Connection conn=MyConnection.getConnection();
 		Statement statement;
 		statement = conn.createStatement();
 		String s="UPDATE task SET description ='"+task.getDescription()+"', "
