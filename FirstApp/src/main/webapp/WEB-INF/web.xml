@@ -118,6 +118,59 @@
  <url-pattern> /TaskShowEditForm</url-pattern>
  </servlet-mapping>
  
+  <servlet>
+ <servlet-name>employee</servlet-name>
+ <servlet-class>example.controller.Employee</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>employee</servlet-name>
+ <url-pattern> /listEmployee</url-pattern>
+ </servlet-mapping>
+ 
+ 
+   <servlet>
+ <servlet-name>employee</servlet-name>
+ <servlet-class>example.controller.Employee</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>employee</servlet-name>
+ <url-pattern> /addEmployee</url-pattern>
+ </servlet-mapping>
+ 
+ 
+   <servlet>
+ <servlet-name>employee</servlet-name>
+ <servlet-class>example.controller.Employee</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>employee</servlet-name>
+ <url-pattern> /deleteEmployee</url-pattern>
+ </servlet-mapping>
+ 
+   <servlet>
+ <servlet-name>employee</servlet-name>
+ <servlet-class>example.controller.Employee</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>employee</servlet-name>
+ <url-pattern> /getEmployee</url-pattern>
+ </servlet-mapping>
+ 
+ 
+   <servlet>
+ <servlet-name>employee</servlet-name>
+ <servlet-class>example.controller.Employee</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>employee</servlet-name>
+ <url-pattern> /getTeam</url-pattern>
+ </servlet-mapping>
+ 
 
  
  

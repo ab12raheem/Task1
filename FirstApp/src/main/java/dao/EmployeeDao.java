@@ -210,9 +210,24 @@ public Set<EmployeeModel> getEmployeesByRole(String roleName) throws SQLExceptio
 		else throw new IllegalStateException("employee not found");
 		
 	}
-	public void deleteEmployee(String userName) {
+	public void deleteEmployee(String userName) throws SQLException {
+		Connection conn=MyConnection.getConnection();
+		EmployeeModel employee=getByUserName(userName);
+		String s= "delete from employee_enrolled where employee_id=? or employee2_id=? ";
+		String z="delete from task_enrolled where employee_id=?";
+		String x="delete from employee where id=?";
+		statement=conn.prepareStatement(s);
+		statement.setInt(1, employee.getId());
+		statement.setInt(2, employee.getId());
+		statement.executeUpdate();
 		
+		statement=conn.prepareStatement(z);
+		statement.setInt(1, employee.getId());
+		statement.executeUpdate();
 		
+		statement=conn.prepareStatement(x);
+		statement.setInt(1, employee.getId());
+		statement.executeUpdate();
 		
 	}
 	public void updateEmloyee(EmployeeModel employee,String userName) {
