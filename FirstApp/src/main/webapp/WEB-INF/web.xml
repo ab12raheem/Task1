@@ -3,6 +3,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
  version="2.4">
+
  
  <resource-ref>
 		<res-ref-name>jdbc/postgres</res-ref-name>
@@ -19,6 +20,113 @@
  <servlet-name>DoMath</servlet-name>
  <url-pattern>/calculate</url-pattern>
  </servlet-mapping>
+ 
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/task</url-pattern>
+ </servlet-mapping>
+ 
+   <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/addTask</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/getTask</url-pattern>
+ </servlet-mapping>
+ 
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/getTasksByStatus</url-pattern>
+ </servlet-mapping>
+ 
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern> /addTaskToEmployee</url-pattern>
+ </servlet-mapping>
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern> /getTasksByEmployee</url-pattern>
+ </servlet-mapping>
+
+
+
+ 
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/deleteTask</url-pattern>
+ </servlet-mapping> 
+ 
+ <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern>/updateTask</url-pattern>
+ </servlet-mapping>
+ 
+  <servlet>
+ <servlet-name>task</servlet-name>
+ <servlet-class>example.controller.Task</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+ <servlet-name>task</servlet-name>
+ <url-pattern> /TaskShowEditForm</url-pattern>
+ </servlet-mapping>
+ 
+
+ 
+ 
+ 
+ <error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/Error.jsp</location>
+	</error-page>
+ 
  
  <servlet>
  <servlet-name>log</servlet-name>

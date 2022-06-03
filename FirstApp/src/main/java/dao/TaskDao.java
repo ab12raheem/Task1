@@ -44,6 +44,7 @@ public class TaskDao {
 			 
 			 
 		 }
+		 conn.close();
 		 if(tasks.isEmpty()) {
 			 throw new IllegalStateException("tasks not found");
 		 }
@@ -284,10 +285,25 @@ public class TaskDao {
 
 		statement = conn.prepareStatement(z);
 		statement.setInt(1, task.getId());
-		statement.setInt(1, employee.getId());
+		statement.setInt(2, employee.getId());
 		statement.executeUpdate();
 	}
-	public void deleteTask(Integer id) {
+	public void deleteTask(Integer id) throws SQLException {
+		Connection conn= MyConnection.getConnection();
+		if(id==null) {
+			throw new IllegalStateException("id is null");
+		}
+		getById(id);
+		String z= "delete from task_enrolled where task_id=?";
+		String s="delete from task where id=?";
+		statement=conn.prepareStatement(z);
+		statement.setInt(1, id);
+		statement.executeUpdate();
+		
+		statement=conn.prepareStatement(s);
+		statement.setInt(1, id);
+		statement.executeUpdate();
+		
 		
 	}
 	public void updateTask(TaskModel task,Integer id) throws SQLException {
@@ -305,7 +321,7 @@ public class TaskDao {
 		statement.setInt(4,id);
 	
 		
-		statement.executeUpdate(s);
+		statement.executeUpdate();
 	
 		
 		
