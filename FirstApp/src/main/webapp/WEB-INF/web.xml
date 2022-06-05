@@ -11,6 +11,35 @@
 		<res-auth>Container</res-auth>
 		<res-sharing-scope>Shareable</res-sharing-scope>
 	</resource-ref>
+	<servlet>
+ <servlet-name>action</servlet-name>
+ <servlet-class>
+ org.apache.struts.action.ActionServlet
+</servlet-class>
+ <init-param>
+ <param-name>application</param-name>
+ <param-value>ApplicationResources</param-value>
+ </init-param>
+ <init-param>
+ <param-name>config</param-name>
+ <param-value>struts-config.xml</param-value>
+  </init-param>
+ </servlet>
+ 
+ 
+ <servlet-mapping>
+<servlet-name>action</servlet-name>
+ <url-pattern>*.do</url-pattern>
+ </servlet-mapping>
+	
+	
+	
+	
+	
+	
+	
+	
+	
  <servlet>
  <servlet-name>DoMath</servlet-name>
  <servlet-class>example.controller.Calculater</servlet-class>
@@ -181,59 +210,9 @@
 	</error-page>
  
  
- <servlet>
- <servlet-name>log</servlet-name>
- <servlet-class>example.controller.Login</servlet-class>
- </servlet>
- 
- <servlet-mapping>
- <servlet-name>log</servlet-name>
- <url-pattern>/login</url-pattern>
- </servlet-mapping>
+
  
  
- 
- 
-  <servlet>
- <servlet-name>LoginPage</servlet-name>
- <jsp-file>/Login.jsp</jsp-file>
- </servlet>
- 
- <servlet-mapping>
- <servlet-name>LoginPage</servlet-name>
- <url-pattern>/log</url-pattern>
- </servlet-mapping>
- 
- 
-   <servlet>
- <servlet-name>AdminPage</servlet-name>
- <jsp-file>/Admin.jsp</jsp-file>
- </servlet>
- 
- <servlet-mapping>
- <servlet-name>AdminPage</servlet-name>
- <url-pattern>/AdminRole</url-pattern>
- </servlet-mapping>
- 
-  <servlet>
- <servlet-name>LeaderPage</servlet-name>
- <jsp-file>/Leader.jsp</jsp-file>
- </servlet>
- 
- <servlet-mapping>
- <servlet-name>LeaderPage</servlet-name>
- <url-pattern>/LeaderRole</url-pattern>
- </servlet-mapping>
- 
- 
-   <servlet>
- <servlet-name>DeveloperPage</servlet-name>
- <jsp-file>/Developer.jsp</jsp-file>
- </servlet>
- 
- <servlet-mapping>
- <servlet-name>DeveloperPage</servlet-name>
- <url-pattern>/DeveloperRole</url-pattern>
- </servlet-mapping>
+
 
 </web-app>

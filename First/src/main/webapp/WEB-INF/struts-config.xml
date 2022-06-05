@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+       "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<action-mappings>
+
+		<action path="/login" type="example.controller.Login"
+			 scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="Leader" path="/Leader.jsp" />
+			<forward name="Developer" path="/Admin.jsp" />
+			<forward name="failure" path="/Login.jsp" />
+		</action>
+
+
+		<action path="/addTask" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+
+		<action path="/task" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+		<action path="/getTask" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+		<action path="/getTasksByStatus" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+
+		<action path="/addTaskToEmployee"
+			type="example.controller.Task" scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+		<action path="/getTasksByEmployee"
+			type="example.controller.Task" scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+
+		<action path="/deleteTask" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+		<action path="/updateTask" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/TaskShowEditForm" type="example.controller.Task"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/listEmployee" type="example.controller.Employee"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/addEmployee" type="example.controller.Employee"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+
+		<action path="/updateEmployee"
+			type="example.controller.Employee" scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/deleteEmployee"
+			type="example.controller.Employee" scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/getEmployee" type="example.controller.Employee"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+		<action path="/getTeam" type="example.controller.Employee"
+			scope="request" validate="false">
+			<forward name="Admin" path="/Admin.jsp" />
+			<forward name="failure" path="/Error.jsp" />
+		</action>
+
+	</action-mappings>
+
+</struts-config>

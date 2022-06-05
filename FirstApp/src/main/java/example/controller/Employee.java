@@ -76,6 +76,7 @@ public class Employee extends HttpServlet {
 
 	private void getTeam(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		if(request.getParameter("id")==null) {
 			throw new IllegalStateException("id is null");
 		}

@@ -3,6 +3,12 @@ package example.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServlet;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,73 +26,57 @@ import example.model.RoleModel;
  * Servlet implementation class Login
  */
 
-public class Login extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class Login extends Action {
+	
 	private EmployeeDao employeeDao=new EmployeeDao();
     private RoleDao roleDao = new RoleDao();   
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Login() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, javax.servlet.http.HttpServletRequest request,
+			javax.servlet.http.HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String userName=request.getParameter("userName");
 		String password=request.getParameter("password");
-		//System.out.println(userName);
-		//System.out.println(password);
-		RequestDispatcher dispatcher;
-		
 		try {
-			EmployeeModel employee=employeeDao.getByUserName(userName);
-			if(password.equals(employee.getPassword())) {
-				
-				RoleModel role = employee.getRole();
-				switch(role.getName()) {
-				case "Manager":
-					dispatcher = request.getRequestDispatcher("/AdminRole");
-					dispatcher.forward(request, response);
-					
-					break;
-				case "TeamLeader": 
-					dispatcher = request.getRequestDispatcher("/LeaderRole");
-					dispatcher.forward(request, response);
-					break;
-				case "Developer":
-					dispatcher = request.getRequestDispatcher("/DeveloperRole");
-					dispatcher.forward(request, response);
-					break;
-				default:
-					throw new IllegalStateException("this user has no role");
-					
-				}
-				 
-				///FirstApp/src/main/java/example/controller/Login.java
-				
-			}else {
-				 dispatcher = request.getRequestDispatcher("/log");
-				dispatcher.forward(request, response);
-			}
+		EmployeeModel employee=employeeDao.getByUserName(userName);
+		if(password.equals(employee.getPassword())) {
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			RoleModel role = employee.getRole();
+			switch(role.getName()) {
+			case "Manager":
+				return mapping.findForward("Admin");
+				
+				
+			case "TeamLeader": 
+				return mapping.findForward("Leader");
+		
+			case "Developer":
+				
+				
+				return mapping.findForward("Developer");
+				
+				
+			default:
+				throw new IllegalStateException("this user has no role");
+				
+			}
+			 
+	
+			
+		}else {
+			return mapping.findForward("failure");
 		}
 		
-	      
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		return null;
+		
 	}
 
+
+
+	
 }
