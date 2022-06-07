@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+       "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+       
+
+<struts-config>
+
+
+<global-forwards >
+ <forward name="welcome"
+ path="/welcome.do"
+ redirect="true" />
+</global-forwards>
+<action-mappings >
+ <action path="/welcome"
+ type="WelcomeAction">
+ <forward name="showWelcome" path="page.welcome" />
+ </action>
+ <action path="/bookList"
+ type="BookListAction">
+ <forward name="showBookList" path="page.booklist" />
+ </action>
+ <action path="/navigation"
+ type="NavigationAction">
+ <forward name="showNavigation" path="/navigation.jsp" />
+ </action>
+</action-mappings>
+
+
+<controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"
+bufferSize="4096" />
+
+
+<plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/WEB-INF/ tiles-defs.xml" />
+</plug-in>
+</struts-config>
